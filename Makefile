@@ -1,4 +1,4 @@
-CXXFLAGS := -lpthread -lm -lwiringPi
+CXXFLAGS := -lpthread -lm
 
 logger:logger.o
 	g++ -o $@ $^ $(CXXFLAGS)
