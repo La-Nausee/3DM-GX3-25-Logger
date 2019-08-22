@@ -13,6 +13,7 @@
 #include <string.h>
 #include <termios.h>
 #include <time.h>
+#include <math.h>
 
 #define DEV_NAME "/dev/ttyACM0"
 #define BAUD_RATE B115200
@@ -170,6 +171,7 @@ void *gx3_log_thread(void *threadid)
 	float ang_vel[3];
 	float mag[3];
 	float M[9]; //rotation matrix
+	float qw,qx,qy,qz;	
 	double deltaT;
 	
 	unsigned char *data = (unsigned char*)malloc(DATA_LENGTH);
@@ -189,10 +191,11 @@ void *gx3_log_thread(void *threadid)
 				//write headers
 				if(gx3_logfile.is_open())
 				{
-					gx3_logfile<<"time_interval,";
-					gx3_logfile<<"ax(g),ay,az,";
-					gx3_logfile<<"gx(dps),gy,gz,";
-					gx3_logfile<<"mx(mgauss),my,mz,";
+					gx3_logfile<<"timestamp,";
+					gx3_logfile<<"ax,ay,az,";
+					gx3_logfile<<"gx,gy,gz,";
+					gx3_logfile<<"mx,my,mz,";
+					gx3_logfile<<"qw,qx,qy,qz,";
 					gx3_logfile<<endl;
 				}
 				
@@ -252,13 +255,22 @@ void *gx3_log_thread(void *threadid)
 			for (unsigned int j = 0; j < 9; j++, k += 4)
 				M[j] = extract_float(&(data[k]));
 			deltaT = extract_int(&(data[k])) / 62500.0;
+
+			qw = sqrt((1.0+M[0]+M[4]+M[8])/2.0);
+
+			qx = (M[7]-M[5])/(4.0*qw);
+
+			qy = (M[2]-M[6])/(4.0*qw);
+
+			qz = (M[3]-M[1])/(4.0*qw);
 			
 			if(gx3_logfile.is_open())
 			{
 				gx3_logfile<<deltaT<<",";
 				gx3_logfile<<acc[2]<<","<<acc[1]<<","<<acc[0]<<",";
 				gx3_logfile<<ang_vel[2]<<","<<ang_vel[1]<<","<<ang_vel[0]<<",";
-				gx3_logfile<<mag[2]<<","<<mag[1]<<","<<mag[0];
+				gx3_logfile<<mag[2]<<","<<mag[1]<<","<<mag[0]<<",";
+				gx3_logfile<<qw<<","<<qx<<","<<qy<<","<<qz;
 				gx3_logfile<<endl;
 			}
 		}
