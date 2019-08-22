@@ -1,5 +1,5 @@
 # 3DM-GX3-25-Logger
-Application for recording the sensor 3DM-GX3-25 data
+Application for recording the sensor 3DM-GX3-25 data (100Hz)
 ****
 |Author|Zeyang Dai|
 |---|---
