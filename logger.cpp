@@ -298,6 +298,7 @@ int main()
 			cout<<"Input the new filename:";
 			//getline(cin,filename);
 			cin>>str;
+			gx3_filename.clear();
 			//gx3_filename = "gx3_";
 			gx3_filename.append(str);
 			gx3_filename.append(".txt");
