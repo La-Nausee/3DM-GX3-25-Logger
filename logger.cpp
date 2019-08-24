@@ -192,9 +192,9 @@ void *gx3_log_thread(void *threadid)
 				if(gx3_logfile.is_open())
 				{
 					gx3_logfile<<"timestamp,";
-					gx3_logfile<<"ax,ay,az,";
-					gx3_logfile<<"gx,gy,gz,";
-					gx3_logfile<<"mx,my,mz,";
+					gx3_logfile<<"ax(g),ay,az,";
+					gx3_logfile<<"wx(rad/s),wy,wz,";
+					gx3_logfile<<"mx(Gauss),my,mz,";
 					gx3_logfile<<"qw,qx,qy,qz,";
 					gx3_logfile<<endl;
 				}
