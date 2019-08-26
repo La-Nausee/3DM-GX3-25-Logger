@@ -172,6 +172,7 @@ void *gx3_log_thread(void *threadid)
 	float mag[3];
 	float M[9]; //rotation matrix
 	float qw,qx,qy,qz;	
+	float pitch, roll, yaw;
 	double deltaT;
 	
 	unsigned char *data = (unsigned char*)malloc(DATA_LENGTH);
@@ -195,7 +196,7 @@ void *gx3_log_thread(void *threadid)
 					gx3_logfile<<"ax(g),ay,az,";
 					gx3_logfile<<"wx(rad/s),wy,wz,";
 					gx3_logfile<<"mx(Gauss),my,mz,";
-					gx3_logfile<<"qw,qx,qy,qz,";
+					gx3_logfile<<"pitch(theta),roll(phi),yaw(psi)";
 					gx3_logfile<<endl;
 				}
 				
@@ -264,13 +265,18 @@ void *gx3_log_thread(void *threadid)
 
 			qz = (M[3]-M[1])/(4.0*qw);
 			
+			pitch = arcsin(-M[2]);
+			roll = arctan(M[5]/M[8]);
+			yaw = arctan(M[1]/M[0]);
+			
 			if(gx3_logfile.is_open())
 			{
 				gx3_logfile<<deltaT<<",";
 				gx3_logfile<<acc[2]<<","<<acc[1]<<","<<acc[0]<<",";
 				gx3_logfile<<ang_vel[2]<<","<<ang_vel[1]<<","<<ang_vel[0]<<",";
 				gx3_logfile<<mag[2]<<","<<mag[1]<<","<<mag[0]<<",";
-				gx3_logfile<<qw<<","<<qx<<","<<qy<<","<<qz;
+				//gx3_logfile<<qw<<","<<qx<<","<<qy<<","<<qz;
+				gx3_logfile<<pitch<<","<<roll<<","<<yaw;
 				gx3_logfile<<endl;
 			}
 		}
