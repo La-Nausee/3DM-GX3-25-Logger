@@ -6,13 +6,14 @@
 #include <pthread.h>
 
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <errno.h>
 #include <unistd.h>
-#include <sys/time.h>
-#include <assert.h>
+#include <fcntl.h>
+#include <string.h>
+#include <termios.h>
+#include <time.h>
+#include <math.h>
 
 using namespace std;
 
