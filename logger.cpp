@@ -16,7 +16,7 @@
 #include <math.h>
 
 #define DEV_NAME "/dev/ttyACM0"
-#define BAUD_RATE B115200
+#define BAUD_RATE B460800
 #define DATA_LENGTH 79
 
 #define NEW_FILE_EVENT    0x03

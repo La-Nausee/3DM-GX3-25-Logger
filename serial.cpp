@@ -99,6 +99,7 @@ int main()
 		cin>>std::dec>>length;
 		if(length == 0 || length > 20)
 			break;
+		write(fd,cmd,index);
 		length = read(fd,responese,length);
 		if(!validate_checksum(responese,length))
 		{
