@@ -41,7 +41,7 @@ int main()
 	const char stop[3] = {'\xFA','\x75','\xB4'};
 	size_t  length = 0, index = 0;
 	char* cmd = (char*) malloc(20);
-	unsigned char* responese = (char*) malloc(20);
+	unsigned char* responese = (unsigned char*) malloc(20);
 	
 	cout<<"Device Port:";
 	cin>>port;
