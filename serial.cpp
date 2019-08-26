@@ -35,7 +35,7 @@ int main()
 {
 	int fd;
 	string port;
-	speed_t baud_rate;
+	//speed_t baud_rate;
 	struct termios tio;
 	
 	const char stop[3] = {'\xFA','\x75','\xB4'};
@@ -45,8 +45,8 @@ int main()
 	
 	cout<<"Device Port:";
 	cin>>port;
-	cout<<"Baud Rate:";
-	cin>>baud_rate;
+	//cout<<"Baud Rate:";
+	//cin>>baud_rate;
 	if((fd = open(port.c_str(), O_RDWR)) < 0)
   	{
 		cout<<"Failed to open "<<port<<endl;
@@ -56,8 +56,8 @@ int main()
 	memset(&tio, 0, sizeof(tio));
     tio.c_cflag = CS8 | CLOCAL | CREAD;
     tio.c_cc[VTIME] = 100;
-    cfsetispeed(&tio, baud_rate);
-    cfsetospeed(&tio, baud_rate);
+    cfsetispeed(&tio, B460800);
+    cfsetospeed(&tio, B460800);
     tcsetattr(fd, TCSANOW, &tio);
 	
 	write(fd,stop,3);
