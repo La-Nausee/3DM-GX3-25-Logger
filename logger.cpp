@@ -265,9 +265,9 @@ void *gx3_log_thread(void *threadid)
 
 			qz = (M[3]-M[1])/(4.0*qw);
 			
-			pitch = arcsin(-M[2]);
-			roll = arctan(M[5]/M[8]);
-			yaw = arctan(M[1]/M[0]);
+			pitch = asin(-M[2]);
+			roll = atan(M[5]/M[8]);
+			yaw = atan(M[1]/M[0]);
 			
 			if(gx3_logfile.is_open())
 			{
