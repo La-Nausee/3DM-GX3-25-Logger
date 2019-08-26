@@ -89,14 +89,17 @@ int main()
 		{
 			cout<<"Byte["<<index<<"] = ";
 			cin>>std::hex>>tmp;
-			cout<<"\t"<<std::hex<<tmp<<endl;
 			cmd[index++] = char(tmp);	
 		}
+		cout<<"Your data: "<<endl;
+		for(index = 0; index < length; index++)
+			cout<<std::hex<<int(cmd[index])<<" ";
+		cout<<endl;
 		cout<<"Number of response(range from 1 to 20, others will exit this program): ";
 		cin>>std::dec>>length;
 		if(length == 0 || length > 20)
 			break;
-		read(fd,responese,length);
+		length = read(fd,responese,length);
 		if(!validate_checksum(responese,length))
 		{
 			cout<<"Failed to checksum on message"<<endl;
