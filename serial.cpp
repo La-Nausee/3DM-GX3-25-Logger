@@ -36,12 +36,13 @@ bool validate_checksum(const unsigned char *data, unsigned short length)
 int main()
 {
 	int fd;
-	char baud_sel = 0;
+	int tmp;
+	unsigned int baud_sel = 0;
 	string port;
 	struct termios tio;
 	
 	const char stop[3] = {'\xFA','\x75','\xB4'};
-	size_t  length = 0, index = 0;
+	int  length = 0, index = 0;
 	char* cmd = (char*) malloc(20);
 	unsigned char* responese = (unsigned char*) malloc(20);
 	
@@ -53,11 +54,11 @@ int main()
 	cout<<"8:B600,    9:B1200,    10:B1800,   11:B2400"<<endl;
 	cout<<"12:B4800,  13:B9600,   14:B19200,  15:B38400"<<endl;
 	cout<<"16:B57600, 17:B115200, 18:B230400, 19:B460800"<<endl;
-	cout<<"Your Baudrate:";
-	cin>>baud_sel;
-	if(baud_sel < 0 || baud_sel > 19)
+	cout<<"Your Selection:";
+	cin>>std::dec>>baud_sel;
+	if(baud_sel > 19)
 	{
-		cout<<"Invalid parameter"<<endl;
+		cout<<"Invalid parameter:"<<std::dec<<baud_sel<<endl;
 		return -1;
 	}
 	//cout<<"Baud Rate:";
@@ -69,28 +70,30 @@ int main()
    	}
 	
 	memset(&tio, 0, sizeof(tio));
-    tio.c_cflag = CS8 | CLOCAL | CREAD;
-    tio.c_cc[VTIME] = 100;
-    cfsetispeed(&tio, baud_rate[baud_sel]);
-    cfsetospeed(&tio, baud_rate[baud_sel]);
-    tcsetattr(fd, TCSANOW, &tio);
+    	tio.c_cflag = CS8 | CLOCAL | CREAD;
+    	tio.c_cc[VTIME] = 100;
+    	cfsetispeed(&tio, baud_rate[baud_sel]);
+    	cfsetospeed(&tio, baud_rate[baud_sel]);
+    	tcsetattr(fd, TCSANOW, &tio);
 	
 	write(fd,stop,3);
 	
 	while(1)
 	{
-		cout<<"Number of bytes to send(range from 1 to 20, others will exit this program): "<<endl;
-		cin>>length;
+		cout<<"Number of bytes to send(range from 1 to 20, others will exit this program): ";
+		cin>>std::dec>>length;
 		if(length == 0 || length > 20)
 			break;
 		index = 0;
 		while(index < length)
 		{
 			cout<<"Byte["<<index<<"] = ";
-			cin>>std::hex>>cmd[index++];
+			cin>>std::hex>>tmp;
+			cout<<"\t"<<std::hex<<tmp<<endl;
+			cmd[index++] = char(tmp);	
 		}
-		cout<<"Number of response(range from 1 to 20, others will exit this program): "<<endl;
-		cin>>length;
+		cout<<"Number of response(range from 1 to 20, others will exit this program): ";
+		cin>>std::dec>>length;
 		if(length == 0 || length > 20)
 			break;
 		read(fd,responese,length);
@@ -99,9 +102,10 @@ int main()
 			cout<<"Failed to checksum on message"<<endl;
 			continue;
 		}
-		cout<<"Response in Hex: ";
+		cout<<"Response in Hex: "<<endl;
 		for(index = 0; index < length; index++)
-			cout<<std::hex<<responese[index]<<" ";
+			cout<<std::hex<<int(responese[index])<<" ";
+		cout<<endl;
 	}
 	
 	write(fd,stop,3);
