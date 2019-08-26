@@ -17,6 +17,8 @@
 
 using namespace std;
 
+const speed_t baud_rate[] = {B0, B50, B75, B110, B134, B150, B200, B300, B600, B1200, B1800, B2400, B4800, B9600\
+			    B19200, B38400, B57600, B115200, B230400, B460800};
 bool validate_checksum(const unsigned char *data, unsigned short length)
 {
   unsigned short chksum = 0;
@@ -34,8 +36,8 @@ bool validate_checksum(const unsigned char *data, unsigned short length)
 int main()
 {
 	int fd;
+	char baud_sel = 0;
 	string port;
-	//speed_t baud_rate;
 	struct termios tio;
 	
 	const char stop[3] = {'\xFA','\x75','\xB4'};
@@ -45,6 +47,19 @@ int main()
 	
 	cout<<"Device Port:";
 	cin>>port;
+	cout<<"Baudrate:"<<endl;
+	cout<<"0:B0,      1:B50,      2:B75,      3:B100"<<endl;
+	cout<<"4:B134,    5:B150,     6:B200,     7:B300"<<endl;
+	cout<<"8:B600,    9:B1200,    10:B1800,   11:B2400"<<endl;
+	cout<<"12:B4800,  13:B9600,   14:B19200,  15:B38400"<<endl;
+	cout<<"16:B57600, 17:B115200, 18:B230400, 19:B460800"<<endl;
+	cout<<"Your Baudrate:";
+	cin>>baud_sel;
+	if(baud_sel < 0 || baud_sel > 19)
+	{
+		cout<<"Invalid parameter"<<endl;
+		return -1;
+	}
 	//cout<<"Baud Rate:";
 	//cin>>baud_rate;
 	if((fd = open(port.c_str(), O_RDWR)) < 0)
@@ -56,8 +71,8 @@ int main()
 	memset(&tio, 0, sizeof(tio));
     tio.c_cflag = CS8 | CLOCAL | CREAD;
     tio.c_cc[VTIME] = 100;
-    cfsetispeed(&tio, B460800);
-    cfsetospeed(&tio, B460800);
+    cfsetispeed(&tio, baud_rate[baud_sel]);
+    cfsetospeed(&tio, baud_rate[baud_sel]);
     tcsetattr(fd, TCSANOW, &tio);
 	
 	write(fd,stop,3);
