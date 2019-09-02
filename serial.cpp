@@ -87,7 +87,7 @@ int main()
 		index = 0;
 		while(index < length)
 		{
-			cout<<"Byte["<<index<<"] = ";
+			cout<<"Byte["<<std::dec<<index<<"] = ";
 			cin>>std::hex>>tmp;
 			cmd[index++] = char(tmp);	
 		}
@@ -97,7 +97,7 @@ int main()
 		cout<<endl;
 		cout<<"Number of response(range from 1 to 20, others will exit this program): ";
 		cin>>std::dec>>length;
-		if(length == 0 || length > 20)
+		if(length > 20)
 			break;
 		write(fd,cmd,index);
 		length = read(fd,responese,length);

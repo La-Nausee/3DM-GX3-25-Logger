@@ -272,9 +272,9 @@ void *gx3_log_thread(void *threadid)
 			if(gx3_logfile.is_open())
 			{
 				gx3_logfile<<deltaT<<",";
-				gx3_logfile<<acc[2]<<","<<acc[1]<<","<<acc[0]<<",";
-				gx3_logfile<<ang_vel[2]<<","<<ang_vel[1]<<","<<ang_vel[0]<<",";
-				gx3_logfile<<mag[2]<<","<<mag[1]<<","<<mag[0]<<",";
+				gx3_logfile<<acc[0]<<","<<acc[1]<<","<<acc[2]<<",";
+				gx3_logfile<<ang_vel[0]<<","<<ang_vel[1]<<","<<ang_vel[2]<<",";
+				gx3_logfile<<mag[0]<<","<<mag[1]<<","<<mag[2]<<",";
 				//gx3_logfile<<qw<<","<<qx<<","<<qy<<","<<qz;
 				gx3_logfile<<pitch<<","<<roll<<","<<yaw;
 				gx3_logfile<<endl;
